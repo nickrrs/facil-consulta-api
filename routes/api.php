@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+//Controllers
+use \App\Http\Controllers\API\CidadeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+//Public Routes
+Route::get('/cidades', [CidadeController::class, 'index'])->name('cidades.index');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
