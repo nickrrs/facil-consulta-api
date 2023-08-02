@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Validators\Cidade;
+namespace App\Validators\MedicoPaciente;
 
-class CidadeValidator
+class MedicoPacienteValidator
 {
     public const ERROR_MESSAGES = [
         'required'       => 'O campo :attribute é obrigatório',
@@ -17,7 +17,8 @@ class CidadeValidator
     ];
 
     public const NEW_PACKAGE_RULE = [
-        'nome' => 'required|string',
-        'estado' => 'required|string'
+        'medico_id' => 'required|integer',
+        'paciente_id' => 'required|integer',
     ];
+
 }

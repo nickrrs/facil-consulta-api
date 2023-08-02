@@ -15,7 +15,7 @@ class CidadeController extends Controller {
         $this->cidadeService = $cidadeService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
         return $this->cidadeService->index();
     }

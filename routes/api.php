@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 //Controllers
 use \App\Http\Controllers\API\CidadeController;
 use \App\Http\Controllers\API\PacienteController;
+use \App\Http\Controllers\API\MedicoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ $router = app(Router::class);
             ->name('cidades.')
             ->group(function() use ($router){
                 $router->get('/', [CidadeController::class, 'index']);
+                $router->get('/{id}/medicos', [MedicoController::class, 'listMedicsByCity']);
             });
     });
 
@@ -51,12 +53,11 @@ $router = app(Router::class);
                 ->prefix('medicos')
                 ->name('medicos.')
                 ->group(function() use ($router){
-                    $router->get('/{id}/pacientes', [PacienteController::class, 'listPacientesByMedic']);
+                    $router->get('/', [MedicoController::class, 'index']);
+                    $router->post('/', [MedicoController::class, 'store']);
+                    $router->post('/{id}/pacientes', [MedicoController::class, 'associatePacient']);
                 });
         });
-
-
-Route::get('/cidades', [CidadeController::class, 'index'])->name('cidades.index');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
