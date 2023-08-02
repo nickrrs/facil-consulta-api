@@ -6,3 +6,4 @@
 
 > Todas operações realizadas via terminal WSL.
 
+> ENV EXAMPLE com os dados de ambiente que usei.
