@@ -25,6 +25,7 @@ $router = app(Router::class);
 //Public Routes
     //Auth
     $router->post('/login', [AuthController::class, 'login']);
+    $router->post('/register', [AuthController::class, 'register']);
 
     //Cidades
     $router->namespace('Api\Cidades')->group(function () use ($router){
