@@ -40,7 +40,6 @@ $router = app(Router::class);
                 ->prefix('pacientes')
                 ->name('pacientes.')
                 ->group(function() use ($router){
-                    $router->get('/', [PacienteController::class, 'listPacientesByMedic']);
                     $router->post('/', [PacienteController::class, 'store']);
                     $router->put('/{id}', [PacienteController::class, 'update']);
                 });
@@ -54,6 +53,7 @@ $router = app(Router::class);
                 ->name('medicos.')
                 ->group(function() use ($router){
                     $router->get('/', [MedicoController::class, 'index']);
+                    $router->get('/{id}/pacientes', [PacienteController::class, 'listPacientesByMedic']);
                     $router->post('/', [MedicoController::class, 'store']);
                     $router->post('/{id}/pacientes', [MedicoController::class, 'associatePacient']);
                 });

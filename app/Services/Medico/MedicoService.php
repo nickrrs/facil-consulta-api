@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Medico;
 use App\Models\Paciente;
+use App\Models\Cidades;
 use App\Models\MedicoPaciente;
 use App\Validators\Medico\MedicoValidator;
 use App\Validators\MedicoPaciente\MedicoPacienteValidator;
@@ -17,12 +18,14 @@ class MedicoService  {
     private $medicoPaciente;
     private $pacienteModel;
     private $medicoModel;
+    private $cidadeModel;
 
-    public function __construct(Medico $medico, MedicoPaciente $medicoPaciente, Paciente $pacienteModel, Medico $medicoModel){
+    public function __construct(Medico $medico, MedicoPaciente $medicoPaciente, Paciente $pacienteModel, Medico $medicoModel, Cidades $cidadeModel){
         $this->medico = $medico;
         $this->medicoPaciente = $medicoPaciente;
         $this->pacienteModel = $pacienteModel;
         $this->medicoModel = $medicoModel;
+        $this->cidadeModel = $cidadeModel;
     }
 
     public function index(){
@@ -46,7 +49,10 @@ class MedicoService  {
     public function listMedicsByCity(int $id){
 
         try{        
-            
+            //Validate city register
+            $cidade = $this->cidadeModel->find($id);
+            if(!isset($cidade)) return response()->json(["error" => "Cidade com ID não cadastrado."], 422);
+
             $medicos = $this->medico::where('cidade_id', $id)->with('cidade')->get();
 
             return $medicos ? response()->json($medicos, 200) : [];
@@ -112,6 +118,7 @@ class MedicoService  {
             $medico = $this->medicoModel->find($medicoPacientePayload['medico_id']);
             if(!isset($medico)) return response()->json(["error" => "Médico com ID não cadastrado."], 422); 
             
+            //Validate pacient register
             $paciente = $this->pacienteModel->find($medicoPacientePayload['paciente_id']);     
             if(!isset($paciente)) return response()->json(["error" => "Paciente com ID não cadastrado."], 422); 
 

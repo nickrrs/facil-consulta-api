@@ -6,20 +6,27 @@ use Throwable;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Paciente;
+use App\Models\Medico;
 use App\Validators\Paciente\PacienteValidator;
 use Illuminate\Support\Facades\Validator;
 
 class PacienteService  {
     private $paciente;
-    public function __construct(Paciente $paciente){
+    private $medico;
+    public function __construct(Paciente $paciente, Medico $medico){
         $this->paciente = $paciente;
+        $this->medico = $medico;
     }
 
     public function listPacientesByMedic(int $id){
 
-        try{        
+        try{       
+
+            //Validate medic register
+            $medico = $this->medico->find($id);
+            if(!isset($medico)) return response()->json(["error" => "Medico com ID não cadastrado."], 422);
             
-            $pacientes = $this->paciente::join('medico_paciente', 'paciente.id', 'paciente_id')->where('medico_paciente.medico_id', $id)->with(['medico'])->get();
+            $pacientes = $this->paciente::join('medico_paciente', 'paciente.id', 'paciente_id')->where('medico_paciente.medico_id', $id)->get();
             
             return $pacientes ? response()->json($pacientes, 200) : [];
 
@@ -79,6 +86,7 @@ class PacienteService  {
         try {
             
             $paciente = $this->paciente->find($id);
+            if(!isset($paciente)) return response()->json(["error" => "Paciente com ID não cadastrado."], 422);
 
             isset($request->nome) ? $paciente->nome = $request->nome : $paciente->nome;
             isset($request->cpf) ? $paciente->cpf = $request->cpf : $request->cpf;

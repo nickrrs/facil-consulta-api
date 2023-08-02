@@ -17,12 +17,6 @@ class Medico extends Model
         'especialidade',
         'cidade_id',
     ];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'deleted_at'
-    ];
     
     public $timestamps = true;
 

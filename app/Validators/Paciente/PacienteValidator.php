@@ -20,13 +20,13 @@ class PacienteValidator
 
     public const NEW_PACKAGE_RULE = [
         'nome' => 'required|string',
-        'cpf' => 'required|string|unique',
+        'cpf' => 'required|string|unique:paciente',
         'celular' => 'required|string',
     ];
 
     public const UPDATE_PACKAGE_RULE = [
         'nome' => 'string',
-        'cpf' => 'string',
+        'cpf' => 'string|unique:paciente',
         'celular' => 'string',
     ];
 }
