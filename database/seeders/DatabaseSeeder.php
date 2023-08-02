@@ -13,7 +13,12 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {   
+        DB::table('users')->insert(array(
+            0 =>
+                array('name' => 'Nickolas Ribeiro','email' => 'nickolas.ribeiro@facilconsulta.com', 'password' => bcrypt('12345678'), 'created_at' => now(), 'updated_at' => now()),
+        ));
+        
         DB::table('cidades')->insert(array(
             0 => array('nome' => 'Paulo Afonso','estado' => 'Bahia', 'created_at' => now(), 'updated_at' => now()),
             1 => array('nome' => 'São Paulo','estado' => 'São Paulo', 'created_at' => now(), 'updated_at' => now()),

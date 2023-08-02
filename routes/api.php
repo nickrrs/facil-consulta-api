@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\API\CidadeController;
 use \App\Http\Controllers\API\PacienteController;
 use \App\Http\Controllers\API\MedicoController;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,9 @@ use \App\Http\Controllers\API\MedicoController;
 
 $router = app(Router::class);
 //Public Routes
+    //Auth
+    $router->post('/login', [AuthController::class, 'login']);
+
     //Cidades
     $router->namespace('Api\Cidades')->group(function () use ($router){
         $router
@@ -33,32 +37,45 @@ $router = app(Router::class);
             });
     });
 
-//Auth Routes
-    //Paciente
-        $router->namespace('Api\Pacientes')->group(function () use ($router){
-            $router
-                ->prefix('pacientes')
-                ->name('pacientes.')
-                ->group(function() use ($router){
-                    $router->post('/', [PacienteController::class, 'store']);
-                    $router->put('/{id}', [PacienteController::class, 'update']);
-                });
-        });
-    
-    //Medico
+    //Medico Public Routes
         $router->namespace('Api\Medicos')->group(function () use ($router){
-            //Plans Routes
             $router
                 ->prefix('medicos')
                 ->name('medicos.')
                 ->group(function() use ($router){
                     $router->get('/', [MedicoController::class, 'index']);
-                    $router->get('/{id}/pacientes', [PacienteController::class, 'listPacientesByMedic']);
-                    $router->post('/', [MedicoController::class, 'store']);
-                    $router->post('/{id}/pacientes', [MedicoController::class, 'associatePacient']);
                 });
         });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Auth Routes
+
+$router->middleware('jwt.verify')->group(function() use ($router) {
+
+   //Auth
+   $router->get('/user', [AuthController::class, 'getUser']);
+
+   //Paciente
+   $router->namespace('Api\Pacientes')->group(function () use ($router){
+    $router
+        ->prefix('pacientes')
+        ->name('pacientes.')
+        ->group(function() use ($router){
+            $router->post('/', [PacienteController::class, 'store']);
+            $router->put('/{id}', [PacienteController::class, 'update']);
+        });
 });
+
+    //Medico
+    $router->namespace('Api\Medicos')->group(function () use ($router){
+        $router
+            ->prefix('medicos')
+            ->name('medicos.')
+            ->group(function() use ($router){
+                $router->get('/{id}/pacientes', [PacienteController::class, 'listPacientesByMedic']);
+                $router->post('/', [MedicoController::class, 'store']);
+                $router->post('/{id}/pacientes', [MedicoController::class, 'associatePacient']);
+            });
+    });
+
+});
+
