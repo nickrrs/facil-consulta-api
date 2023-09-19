@@ -8,4 +8,4 @@
 
 > ENV EXAMPLE com os dados de ambiente que usei.
 
-> Para autenticação, dentro dos seeders, criei um usuário padrão para vocês logarem e testarem. Porém, deixei por fora uma rota de cadastro manual, caso queiram testar também (/api/register).
+> Para autenticação, dentro dos seeders, criei um usuário padrão para logar e testar. Porém, deixei por fora uma rota de cadastro manual, caso queiram testar também (/api/register).
